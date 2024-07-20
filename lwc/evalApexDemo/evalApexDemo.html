@@ -1,0 +1,49 @@
+<template>
+
+    <lightning-card>
+
+        Example of how to test a formula with eval from Apex 10
+
+
+        <div class="slds-grid slds-wrap">
+              <div class="slds-col slds-large-size_3-of-12 slds-p-horizontal_medium">
+                <span><lightning-combobox label="Choose a formula type" options={options} onchange={handleChange}></lightning-combobox></span>
+              </div>
+                <div class="slds-col slds-large-size_3-of-12 slds-p-horizontal_medium">
+              <span><lightning-input label="Put the record Id target" onchange={setRecordId}></lightning-input></span>
+            </div>
+        </div>
+        <div class="slds-grid slds-wrap">
+              <div class="slds-col slds-large-size_3-of-12 slds-p-horizontal_medium">
+                <span><lightning-textarea name="formula1" label="Your formula" onchange={setValue1}></lightning-textarea></span>
+              </div>
+              <div class="slds-col slds-large-size_3-of-12  slds-p-horizontal_medium">
+                <span><lightning-textarea name="result1" label="result of the formula" value={result1}></lightning-textarea></span>
+            </div>
+        </div>
+        <div class="slds-grid slds-wrap">
+          <div class="slds-col slds-large-size_3-of-12  slds-p-horizontal_medium">
+            <span><lightning-textarea name="formula2" label="Your formula" onchange={setValue2}></lightning-textarea></span>
+              </div>
+              <div class="slds-col slds-large-size_3-of-12  slds-p-horizontal_medium">
+                <span><lightning-textarea name="result2" label="result of the formula" value={result2}></lightning-textarea></span>
+                </div>
+        </div>
+        
+
+        <br/><br/>
+        <div class="slds-grid slds-wrap">
+              <div class="slds-col slds-large-size_6-of-12 slds-p-horizontal_medium">
+            <span><lightning-input label="(optional) fields to retrieve if parent values are required, separated with a , " onchange={setOptionalFields} ></lightning-input></span>
+          </div>
+        </div>
+        <br/><br/>
+        <div class="slds-grid slds-wrap">
+          <div class="slds-col slds-large-size_6-of-12">
+            <lightning-button class="slds-align_absolute-center" label="calculate results" onclick={calculate}></lightning-button>
+          </div>
+        </div>
+
+    </lightning-card>
+    
+</template>
