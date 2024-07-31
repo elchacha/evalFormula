@@ -9,7 +9,7 @@ export default class EvalApexDemo extends LightningElement {
     formula2;
     result1;
     result2;
-    optionalFields;
+    userMode=false;
 
     get options() {
         return [
@@ -39,23 +39,20 @@ export default class EvalApexDemo extends LightningElement {
         this.recordId = event.detail.value;
     }
 
-    setOptionalFields(){
-        this.optionalFields=event.detail.value;
+    setOptionalFields(event){
+        this.userMode=event.target.checked;
     }
 
     calculate(){
-        console.log(this.recordId);
-        console.log(this.formula1);
-        console.log(this.formula2);
-        console.log(this.formulaType);
+        console.log('this.userMode>'+this.userMode);
         if(!this.optionalFields)this.optionalFields=null;
         if(this.formula1){
-            testFormula({recordId: this.recordId , formulaType : this.formulaType,formulaValue : this.formula1,optionalFields : this.optionalFields}).then(data => {
+            testFormula({recordId: this.recordId , formulaType : this.formulaType,formulaValue : this.formula1,userMode : this.userMode}).then(data => {
                 this.result1=data;
             });
         }
         if(this.formula2){
-            testFormula({recordId: this.recordId , formulaType : this.formulaType,formulaValue : this.formula2,optionalFields : this.optionalFields}).then(data => {
+            testFormula({recordId: this.recordId , formulaType : this.formulaType,formulaValue : this.formula2,userMode : this.userMode}).then(data => {
                 this.result2=data;
             });
         }
