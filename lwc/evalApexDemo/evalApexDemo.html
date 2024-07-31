@@ -2,7 +2,7 @@
 
     <lightning-card>
 
-        Example of how to test a formula with eval from Apex 10
+        Example of how to test a formula with eval from Apex
 
 
         <div class="slds-grid slds-wrap">
@@ -33,8 +33,20 @@
 
         <br/><br/>
         <div class="slds-grid slds-wrap">
-              <div class="slds-col slds-large-size_6-of-12 slds-p-horizontal_medium">
-            <span><lightning-input label="(optional) fields to retrieve if parent values are required, separated with a , " onchange={setOptionalFields} ></lightning-input></span>
+            <div class="slds-col slds-large-size_6-of-12 slds-p-horizontal_medium">
+              <span>
+                <div class="slds-form-element">
+                  <label class="slds-checkbox_toggle slds-grid">
+                    <span class="slds-form-element__label slds-m-bottom_none">Restrict the formula to fields available to user (aka disable system mode) :</span>
+                    <input type="checkbox" name="checkbox-toggle-16" value="checkbox-toggle-16" aria-describedby="checkbox-toggle-16" onclick={setOptionalFields}/>
+                    <span id="checkbox-toggle-16" class="slds-checkbox_faux_container">
+                      <span class="slds-checkbox_faux"></span>
+                      <span class="slds-checkbox_on">Enabled</span>
+                      <span class="slds-checkbox_off">Disabled</span>
+                    </span>
+                  </label>
+                </div>
+              </span>
           </div>
         </div>
         <br/><br/>
