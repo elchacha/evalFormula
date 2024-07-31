@@ -1,5 +1,10 @@
 public with sharing class EvalApexDemo {
 
+    /*
+    simple formula example :
+
+    'auto fields mapping with parent fields  : ' & Account.Name &' AND ' & FirstName
+    */
 
     public static Map<String,FormulaEval.FormulaReturnType> types = new Map<String,FormulaEval.FormulaReturnType>();
 
@@ -15,9 +20,8 @@ public with sharing class EvalApexDemo {
 
 
     @AuraEnabled
-    public static Object testFormula(Id recordId,String formulaType,String formulaValue,String optionalFields){
+    public static Object testFormula(Id recordId,String formulaType,String formulaValue,boolean userMode){
 
-        SObject obj = Database.query(SobjectUtil.getStarQueryFromRecordId(recordId,optionalFields));
         FormulaEval.FormulaInstance formulaInstance = null;
 
         try {
@@ -30,6 +34,14 @@ public with sharing class EvalApexDemo {
             return ' error in formula or type : '+  fve.getMessage();
         } catch (Exception e){
             return ' untype error : '+  e.getMessage();
+        }
+        
+        String queryStr = 'select ' + String.join(new List<String>(formulaInstance.getReferencedFields()),',') + ' FROM '+recordId.getSobjectType()+' WHERE Id=:recordId';
+        SObject obj=null;
+        if(userMode){
+        	obj = Database.query(queryStr,AccessLevel.USER_MODE);
+        }else{
+			obj = Database.query(queryStr);            
         }
 
         Object result=null;
