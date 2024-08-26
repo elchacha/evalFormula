@@ -5,10 +5,13 @@ export default class EvalApexDemo extends LightningElement {
 
     formulaType;
     recordId;
+    recordId2;
     formula1;
     formula2;
     result1;
     result2;
+    result21;
+    result22;
     userMode=false;
 
     get options() {
@@ -38,6 +41,9 @@ export default class EvalApexDemo extends LightningElement {
     setRecordId(){
         this.recordId = event.detail.value;
     }
+    setRecordId2(){
+        this.recordId2 = event.detail.value;
+    }
 
     setOptionalFields(event){
         this.userMode=event.target.checked;
@@ -54,6 +60,16 @@ export default class EvalApexDemo extends LightningElement {
         if(this.formula2){
             testFormula({recordId: this.recordId , formulaType : this.formulaType,formulaValue : this.formula2,userMode : this.userMode}).then(data => {
                 this.result2=data;
+            });
+        }
+        if(this.formula1&&this.recordId2){
+            testFormula({recordId: this.recordId2 , formulaType : this.formulaType,formulaValue : this.formula1,userMode : this.userMode}).then(data => {
+                this.result21=data;
+            });
+        }
+        if(this.formula2&&this.recordId2){
+            testFormula({recordId: this.recordId2 , formulaType : this.formulaType,formulaValue : this.formula2,userMode : this.userMode}).then(data => {
+                this.result22=data;
             });
         }
 
