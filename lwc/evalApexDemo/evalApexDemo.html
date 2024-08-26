@@ -6,11 +6,14 @@
 
 
         <div class="slds-grid slds-wrap">
-              <div class="slds-col slds-large-size_3-of-12 slds-p-horizontal_medium">
-                <span><lightning-combobox label="Choose a formula type" options={options} onchange={handleChange}></lightning-combobox></span>
-              </div>
-                <div class="slds-col slds-large-size_3-of-12 slds-p-horizontal_medium">
+            <div class="slds-col slds-large-size_3-of-12 slds-p-horizontal_medium">
+              <span><lightning-combobox label="Choose a formula type" options={options} onchange={handleChange}></lightning-combobox></span>
+            </div>
+            <div class="slds-col slds-large-size_3-of-12 slds-p-horizontal_medium">
               <span><lightning-input label="Put the record Id target" onchange={setRecordId}></lightning-input></span>
+            </div>
+            <div class="slds-col slds-large-size_3-of-12 slds-p-horizontal_medium">
+              <span><lightning-input label="Put the record Id target" onchange={setRecordId2}></lightning-input></span>
             </div>
         </div>
         <div class="slds-grid slds-wrap">
@@ -20,6 +23,12 @@
               <div class="slds-col slds-large-size_3-of-12  slds-p-horizontal_medium">
                 <span><lightning-textarea name="result1" label="result of the formula" value={result1}></lightning-textarea></span>
             </div>
+            <template if:true={recordId2}>
+              <div class="slds-col slds-large-size_3-of-12  slds-p-horizontal_medium">
+                <span><lightning-textarea name="result1" label="result of the formula" value={result21}></lightning-textarea></span>
+              </div>
+            </template>
+
         </div>
         <div class="slds-grid slds-wrap">
           <div class="slds-col slds-large-size_3-of-12  slds-p-horizontal_medium">
@@ -27,7 +36,12 @@
               </div>
               <div class="slds-col slds-large-size_3-of-12  slds-p-horizontal_medium">
                 <span><lightning-textarea name="result2" label="result of the formula" value={result2}></lightning-textarea></span>
+              </div>
+              <template if:true={recordId2}>
+                <div class="slds-col slds-large-size_3-of-12  slds-p-horizontal_medium">
+                  <span><lightning-textarea name="result1" label="result of the formula" value={result22}></lightning-textarea></span>
                 </div>
+              </template>
         </div>
         
 
