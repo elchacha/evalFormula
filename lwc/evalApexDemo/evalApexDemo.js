@@ -13,6 +13,7 @@ export default class EvalApexDemo extends LightningElement {
     result21;
     result22;
     userMode=false;
+    useAnotherRecord=false;
 
     get options() {
         return [
@@ -47,6 +48,10 @@ export default class EvalApexDemo extends LightningElement {
 
     setOptionalFields(event){
         this.userMode=event.target.checked;
+    }
+
+    handleClick(event){
+        this.useAnotherRecord=event.target.checked;
     }
 
     calculate(){

@@ -1,0 +1,7 @@
+.checkboxes {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    word-wrap: break-word;
+  }
