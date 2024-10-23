@@ -1,5 +1,8 @@
 import { LightningElement } from 'lwc';
 import testFormula from '@salesforce/apex/EvalApexDemo.testFormula';
+import getObjectInfo from '@salesforce/apex/EvalApexDemo.getObjectInfo';
+import getWrapperFields from '@salesforce/apex/EvalApexDemo.getWrapperFields';
+
 
 export default class EvalApexDemo extends LightningElement {
 
@@ -49,8 +52,10 @@ export default class EvalApexDemo extends LightningElement {
         this.userMode=event.target.checked;
     }
 
+    objectInfo;
     calculate(){
-        console.log('this.userMode>'+this.userMode);
+        getObjectInfo({recordId: this.recordId}).then(data => this.objectInfo=data);
+
         if(!this.optionalFields)this.optionalFields=null;
         if(this.formula1){
             testFormula({recordId: this.recordId , formulaType : this.formulaType,formulaValue : this.formula1,userMode : this.userMode}).then(data => {
@@ -72,7 +77,29 @@ export default class EvalApexDemo extends LightningElement {
                 this.result22=data;
             });
         }
-
     }
+
+
+    displayModal;
+    fieldDescriptions;
+    async openWrapperInfo(event){
+        this.fieldDescriptions=[];
+        let tmpFieldDescription;
+        await getWrapperFields({wrapperName :event.target.dataset.wrapper}).then(data => {
+            console.log('data :' + JSON.stringify(data));
+            tmpFieldDescription = data;
+        });
+        console.log('tmpFieldDescription :' + JSON.stringify(tmpFieldDescription));
+        for (let fieldName in tmpFieldDescription) {
+            this.fieldDescriptions.push({description:tmpFieldDescription[fieldName], fieldName:fieldName});
+         }
+        this.displayModal=true;
+        console.log('values : '+JSON.stringify(this.fieldDescriptions));
+    }
+
+    closeWrapperInformation(){
+        this.displayModal=false;
+    }
+
 
 }

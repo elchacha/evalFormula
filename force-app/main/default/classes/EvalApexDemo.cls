@@ -2,17 +2,22 @@ public with sharing class EvalApexDemo {
 
     /*
     simple formula example :
-    contact id : 003d2000001qs5NAAQ / 003d2000001qs5OAAQ
+    contact id : 001d2000008CmCMAA0 / 001d2000008CmCOAA0
 
-    'auto fields mapping with parent fields  : ' & Account.Name &' AND ' & FirstName 
+     Name & ' and owner account is '  & Owner.FirstName & '  ' & Owner.LastName
 
     wrapped Example :
 
     Account : 
 
-    003d2000001qs5NAAQ / 003d2000001qs5OAAQ
+    001d2000008CmCMAA0 / 001d2000008CmCOAA0
 
-    ' contacts records for recordName : '+ Account.Name +' and owner account is '  + Account.Owner.FirstName
+    nbContacts + ' contacts records for recordName : '+ acct.Name +' and owner account is '  + acct.Owner.FirstName +' ' + acct.Owner.LastName
+
+    EvalFormulaExample__c
+    a04d2000000DxtVAAS
+
+    hardCodedString2 & ' ' & record.Id
 
     */
 
@@ -32,6 +37,20 @@ public with sharing class EvalApexDemo {
     static System.type wrapperClass; 
     static IntFormulaWrapper wrappedRecord;
 
+
+    @AuraEnabled
+    public static ObjectInfo getObjectInfo(Id recordId){
+        return new ObjectInfo(recordId);
+    }
+
+
+    @AuraEnabled
+    public static Map<String,String> getWrapperFields(String wrapperName){
+        IntFormulaWrapper wrappedRecord = (IntFormulaWrapper)Type.forName(wrapperName).newInstance();
+        return wrappedRecord.getFieldsUsage();
+    }
+
+
     @AuraEnabled
     public static Object testFormula(Id recordId,String formulaType,String formulaValue,boolean userMode){
 
@@ -41,7 +60,7 @@ public with sharing class EvalApexDemo {
 
         try {
             try {
-                wrapperClass=Type.forName('Formula'+recordType+'Wrapper');
+                wrapperClass=getWrapperClass(recordType);
                 System.debug('could  find a wrapper for :'+recordType +'with name : '+wrapperClass);
                 wrappedRecord = (IntFormulaWrapper)wrapperClass.newInstance();
                 if(isWrapperNeeded()){
@@ -57,6 +76,7 @@ public with sharing class EvalApexDemo {
                     .withType (recordType)
                     .withFormula (formulaValue)
                     .build();
+                    wrapperClass=null;
                 }
 
     
@@ -64,6 +84,7 @@ public with sharing class EvalApexDemo {
     
             } catch (Exception e) {
                 System.debug('could not find a wrapper for :'+recordType);
+                System.debug(e);
     
                 formulaInstance=Formula.builder()
                 .withReturnType (types.get(formulaType))
@@ -149,5 +170,28 @@ public with sharing class EvalApexDemo {
             if(formulaToRun.contains(varWrapper)) return true;
         }
         return false;
+    }
+
+    private static System.Type getWrapperClass(Schema.SObjectType recordType ){
+        String sRecordType = String.valueOf(recordType).replaceAll('__c','');
+        try {
+            return Type.forName('Formula'+sRecordType+'Wrapper');
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+
+    public class ObjectInfo{
+        @AuraEnabled
+        public String objectName;
+        @AuraEnabled
+        public String wrapperClass;
+
+        public ObjectInfo(Id recordId){
+            Schema.SObjectType recordType = (Schema.SObjectType)recordId.getSobjectType();
+            objectName = String.valueOf(recordType);
+            wrapperClass=String.valueOf(getWrapperClass(recordType));
+        }
     }
 }

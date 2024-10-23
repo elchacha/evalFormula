@@ -2,7 +2,20 @@
 
   <lightning-card>
 
-      Example of how to test a formula with eval from Apex
+      <b>Example of how to test a formula with eval from Apex </b>
+      <template if:true={objectInfo}>
+           Object type : {objectInfo.objectName}. 
+           <template if:true={objectInfo.wrapperClass}>
+              Wrapper : <lightning-button 
+                variant="base"
+                label={objectInfo.objectName}
+                data-wrapper={objectInfo.wrapperClass}
+                onclick={openWrapperInfo} 
+              ></lightning-button>
+       </template>
+ 
+      </template>
+      <br><br>
 
 
       <div class="slds-grid slds-wrap">
@@ -13,7 +26,7 @@
             <span><lightning-input label="Put the record Id target" onchange={setRecordId}></lightning-input></span>
           </div>
           <div class="slds-col slds-large-size_3-of-12 slds-p-horizontal_medium">
-            <span><lightning-input label="Put the record Id target" onchange={setRecordId2}></lightning-input></span>
+            <span><lightning-input label="Put another record Id target" onchange={setRecordId2}></lightning-input></span>
           </div>
       </div>
       <div class="slds-grid slds-wrap">
@@ -71,5 +84,36 @@
       </div>
 
   </lightning-card>
+
+
+  <template if:true={displayModal}>
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+      <div class="slds-modal__container">
+        <lightning-button-icon  icon-name="utility:close" variant="bare"
+          class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+          alternative-text="Close" title="Close"
+          onclick={closeWrapperInformation} >
+        </lightning-button-icon>
+        <div class="slds-modal__header">
+          <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate" tabindex="-1">Fields available through the wrapper</h1>
+        </div>
+        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+          <table border="1">
+            <tr>
+              <td style="text-align: center" class="slds-m-around_xxx-small"><b>Field Name</b></td>
+              <td style="text-align: center" class="slds-m-around_xxx-small"><b>Field Usage</b></td>
+            </tr>            
+            <template for:each={fieldDescriptions} for:item="field">
+              <tr key={field.fieldName}>
+                <td><div class="slds-m-around_xxx-small">{field.fieldName}</div></td>
+                <td><div class="slds-m-around_xxx-small">{field.description}</div></td>
+              </tr>            
+              </template>
+          </table>
+        </div>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+  </template>
   
 </template>

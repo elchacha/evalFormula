@@ -19,4 +19,11 @@ global with sharing class FormulaAccountWrapper implements IntFormulaWrapper{
         return new List<String>{'nbContacts'};
     }
 
+    public Map<String,String> getFieldsUsage(){
+        Map<String,String> result = new Map<String,String>();
+        result.put('acct','Contains the account fields for the record. Must be used with acct.FIELDNAME ...');
+        result.put('nbContacts','contains the number of Contacts linked to the account');
+        return result;
+    }
+
 }
