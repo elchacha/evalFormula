@@ -9,7 +9,7 @@ https://XXXXXXXXXXXXX.lightning.force.com/lightning/cmp/c__evalApexDemo
 To test it, you can use an Account Id and use the following TEXT formula :
 
 
-##**Simple record example :**
+## Simple record example :
 Name & ' and owner account is '  & Owner.FirstName & '  ' & Owner.LastName
 
 **Wrapper apex example :**
