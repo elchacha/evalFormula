@@ -2,9 +2,8 @@ To open the lwc , use the following url :
 
 https://XXXXXXXXXXXXX.lightning.force.com/lightning/cmp/c__evalApexDemo
 
-![image](https://github.com/user-attachments/assets/ac562211-a8ec-421f-9d40-97b2aed09443)
+<img width="721" alt="{F32BE9B0-0031-41FF-A88E-4B353743CB95}" src="https://github.com/user-attachments/assets/cbf15cce-135d-4ebb-a295-23afefd5808d">
 
-<img width="484" alt="{65FE2FBA-EA23-4836-AFF4-253CF24DCE27}" src="https://github.com/user-attachments/assets/a3f6e1c6-88c1-44f9-ae9b-f8a81450239d">
 
 
 
