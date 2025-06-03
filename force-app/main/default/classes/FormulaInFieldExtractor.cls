@@ -4,13 +4,37 @@ public with sharing class FormulaInFieldExtractor {
     static Map<String,String> relObjectToApiName = new Map<String,String>();
     static Map<String,Map<String, SObjectField>> mapObjectFields = new Map<String,Map<String, SObjectField>>();
     static Set<String> allFields = new Set<String>();
+    static Set<String> nestedFields = new Set<String>();
+
+
+    static Map<schema.DisplayType,FormulaEval.FormulaReturnType> mapTypes= new Map<schema.DisplayType,FormulaEval.FormulaReturnType>();
+    static{
+        mapTypes.put(schema.DisplayType.PERCENT,FormulaEval.FormulaReturnType.DECIMAL);
+        mapTypes.put(schema.DisplayType.DOUBLE,FormulaEval.FormulaReturnType.DOUBLE);
+        mapTypes.put(schema.DisplayType.DATE,FormulaEval.FormulaReturnType.DATE);
+        mapTypes.put(schema.DisplayType.DATETIME,FormulaEval.FormulaReturnType.DATETIME);
+        mapTypes.put(schema.DisplayType.STRING,FormulaEval.FormulaReturnType.STRING);
+        mapTypes.put(schema.DisplayType.BOOLEAN,FormulaEval.FormulaReturnType.BOOLEAN);
+        mapTypes.put(schema.DisplayType.TIME,FormulaEval.FormulaReturnType.TIME);
+        mapTypes.put(schema.DisplayType.INTEGER,FormulaEval.FormulaReturnType.INTEGER);
+    }
 
 
     public static Set<String> getAllField(String objectName,String aFormula,FormulaEval.FormulaReturnType formulAType){
-        return getAllField(objectName, aFormula, formulAType, '');
+        return getAllField(objectName, aFormula, formulAType, '',false);
     }
 
-    private static Set<String> getAllField(String objectName,String aFormula,FormulaEval.FormulaReturnType formulAType,String initialRelation){
+
+    public static Set<String> getNestedFields(String objectName,String aFormula,FormulaEval.FormulaReturnType formulAType){
+        getAllField(objectName, aFormula, formulAType, '',false);
+        return nestedFields;
+    }
+
+    private static Set<String> getNestedField(String objectName,String aFormula,FormulaEval.FormulaReturnType formulAType,String initialRelation){
+        return getAllField(objectName, aFormula, formulAType, initialRelation,true);
+    }
+
+    private static Set<String> getAllField(String objectName,String aFormula,FormulaEval.FormulaReturnType formulAType,String initialRelation,boolean processingNestedFields){
          Set<String> tmpFields;
             FormulaEval.FormulaInstance formulaInstance=Formula.builder()
             .withReturnType (formulAType)
@@ -24,9 +48,11 @@ public with sharing class FormulaInFieldExtractor {
             if(!allFields.contains(field)){
                 treatFieldFormula(objectName,field);
                 allFields.add(initialRelation+field);
+                if(processingNestedFields){
+                    nestedFields.add(initialRelation+field);
+                }
             }
         }
-        System.debug(JSON.serialize(allFields));
         return allFields;
     }
 
@@ -40,9 +66,10 @@ public with sharing class FormulaInFieldExtractor {
 
         }
         if(mapObjectFields.get(objectName).get(fieldName).getDescribe().getCalculatedFormula()!=null){
-            system.debug(objectName);
-            system.debug(fieldName);
-            getAllField(objectName,mapObjectFields.get(objectName).get(fieldName).getDescribe().getCalculatedFormula(),FormulaEval.FormulaReturnType.DOUBLE,initialRelation);
+
+            Schema.DescribeFieldResult dfr = mapObjectFields.get(objectName).get(fieldName).getDescribe();
+
+            getNestedField(objectName,dfr.getCalculatedFormula(),mapTypes.get(dfr.getType()),initialRelation);
         }
     }
 
